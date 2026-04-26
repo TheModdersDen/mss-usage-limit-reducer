@@ -1,0 +1,83 @@
+---
+description: Use when the user is hitting usage/rate limits, burning through tokens, running a long conversation, or asks how to use the AI more efficiently. Triggers on phrases like "hit my limit", "running out of tokens", "usage limit", "save tokens", "reduce usage", "am I wasting tokens", "this chat is getting long", "which model should I use", "context is full".
+globs: 
+alwaysApply: false
+---
+
+# Usage Limit Reducer (Cursor)
+
+Apply the 11 rules for cutting AI token usage. AI agents re-read the entire conversation
+every turn — 98.5 % of tokens often go to re-reading history rather than generating
+responses. Diagnose where tokens are going and apply the rules that actually move the
+needle.
+
+## How to run this skill
+
+Do the steps in order. Skip any that clearly don't apply, but don't skip all of them.
+
+### Step 1 — Measure usage
+
+Check your token consumption:
+
+1. Open **Cursor Settings → Account** to see your usage dashboard.
+2. If the user is also a Claude Code user, run the bundled report script:
+   ```bash
+   python3 ~/.cursor/extensions/usage-limit-reducer/scripts/usage-report.py --days 7
+   ```
+   (Adjust path to wherever the skill was installed.)
+
+Key numbers to surface: model in use, conversation length (turns), whether a context
+file (`.cursorrules` / `.cursor/rules/`) is present.
+
+### Step 2 — Diagnose the current session
+
+Check three things:
+
+1. **Conversation length.** If > 15–20 turns, Rule #2 applies. In Cursor Composer:
+   - Use **"New Chat"** (`⌘N` / `Ctrl+N`) and paste a one-paragraph summary as the
+     first message.
+   - Or use **"Summarize conversation"** if available in your Cursor version.
+
+2. **Rules file presence.** Check for `.cursorrules` (project root) or files under
+   `.cursor/rules/`. If missing, Rule #6 applies — offer to create one with the user's
+   role, stack, and coding conventions so every new session doesn't burn 3–5 turns on
+   setup.
+
+3. **Model in use.** Open the model selector in Composer (bottom of the chat pane).
+   If the user is on a large model (Claude Opus, GPT-4o, etc.) for trivial tasks
+   (formatting, renaming, grammar), Rule #8 applies — suggest switching to
+   `claude-haiku-4-5`, `gpt-4o-mini`, or `cursor-small` for those.
+
+### Step 3 — Apply the rules that match
+
+Pick the 2–4 most relevant rules.
+
+| # | Rule | Cursor action |
+|---|------|---------------|
+| 1 | Don't follow up to correct — restart | `⌘N` / new Composer window + improved prompt |
+| 2 | Fresh chat every 15–20 turns | New chat + one-paragraph summary as first message |
+| 3 | Batch questions into one message | Combine related asks; Composer handles the full picture better |
+| 4 | Track actual token usage | Cursor Settings → Account → Usage |
+| 5 | Reuse recurring context | Put it in `.cursorrules` or `.cursor/rules/*.mdc` — not re-pasted each session |
+| 6 | Set up memory / user preferences | Create/update `.cursorrules` with role, stack, conventions |
+| 7 | Turn off features you don't use | Disable unused Cursor extensions and MCP servers |
+| 8 | Use a lighter model for simple tasks | Switch model in Composer bottom-bar to `cursor-small`, `claude-haiku-4-5`, or `gpt-4o-mini` |
+| 9 | Spread work across the day | Split long work into 2–3 sessions within your plan's rolling window |
+| 10 | Work off-peak | Evenings and weekends stretch shared compute; slower responses during peak |
+| 11 | Enable overage / Pro plan safety net | Cursor Pro includes higher limits; check cursor.com/pricing |
+
+### Step 4 — Offer concrete next actions
+
+End with a short ordered list. Examples:
+
+- "This conversation is 30+ turns. Start a new Composer window (`⌘N`) and paste a one-paragraph summary."
+- "No `.cursorrules` found. I can create one with your role and stack — want me to?"
+- "You're using Claude Opus for a rename. Switch to `cursor-small` in the model selector."
+
+Don't recite every rule. Match advice to what the session actually shows.
+
+## What this skill does NOT do
+
+- It does not silently switch models or edit settings. Recommend, then act on confirmation.
+- It does not clear context without asking — the user may have important unsaved context.
+- It does not send any data anywhere. All measurement is local.
