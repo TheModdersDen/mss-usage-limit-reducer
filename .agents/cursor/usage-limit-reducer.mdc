@@ -17,14 +17,22 @@ Do the steps in order. Skip any that clearly don't apply, but don't skip all of 
 
 ### Step 1 — Measure usage
 
-Check your token consumption:
+Run the bundled Cursor diagnostic script to check your environment:
 
-1. Open **Cursor Settings → Account** to see your usage dashboard.
-2. If the user is also a Claude Code user, run the bundled report script:
-   ```bash
-   python3 ~/.cursor/extensions/usage-limit-reducer/scripts/usage-report.py --days 7
-   ```
-   (Adjust path to wherever the skill was installed.)
+```bash
+# macOS / Linux
+python3 .agents/cursor/scripts/usage-report.py
+
+# Windows (PowerShell or Command Prompt)
+python .agents\cursor\scripts\usage-report.py
+```
+
+Add `--json` for machine-readable output, or `--cwd /path/to/project` to scan
+a different directory. The script detects your Cursor installation, checks for
+`.cursor/rules/*.mdc` and `.cursorrules` files, and links you to your quota
+dashboard.
+
+For live quota numbers, open **Cursor Settings → Account** (cursor.com/settings).
 
 Key numbers to surface: model in use, conversation length (turns), whether a context
 file (`.cursorrules` / `.cursor/rules/`) is present.

@@ -64,6 +64,15 @@ Cursor reads project rules from `.cursor/rules/*.mdc` files.
 4. Restart Cursor. The rule will be available in Composer and will auto-trigger on the
    phrases listed in the file's `description` field.
 
+**Diagnostic script (macOS / Linux / Windows):**
+```bash
+# macOS / Linux
+python3 .agents/cursor/scripts/usage-report.py
+
+# Windows
+python .agents\cursor\scripts\usage-report.py
+```
+
 **Alternative — `.cursorrules` (legacy format):**
 ```bash
 cat .agents/cursor/usage-limit-reducer.mdc >> .cursorrules
@@ -91,6 +100,15 @@ GitHub Copilot reads workspace-level instructions from `.github/copilot-instruct
 4. In VS Code you can also add workspace-level inline instructions:
    - Open **Settings** → search for `github.copilot.chat.codeGeneration.instructions`
    - Add `{ "file": ".github/copilot-instructions.md" }` to the list.
+
+**Diagnostic script (macOS / Linux / Windows):**
+```bash
+# macOS / Linux
+python3 .agents/github-copilot/scripts/usage-report.py
+
+# Windows
+python .agents\github-copilot\scripts\usage-report.py
+```
 
 **Xcode (via GitHub Copilot for Xcode):**
 
@@ -132,6 +150,15 @@ root, and user-level instructions from `~/.gemini/GEMINI.md`.
 4. Open or reload your project in Firebase Studio / VS Code with Gemini Code Assist.
    The instructions will be picked up automatically.
 
+**Diagnostic script (macOS / Linux / Windows):**
+```bash
+# macOS / Linux
+python3 .agents/gemini/scripts/usage-report.py
+
+# Windows
+python .agents\gemini\scripts\usage-report.py
+```
+
 ---
 
 ### xAI Grok
@@ -141,12 +168,21 @@ Use the universal fallback:
 
 1. Copy the universal agent file into your project:
    ```bash
-   cp .agents/universal/AGENT.md AGENTS.md
+   cp .agents/universal/AGENTS.md AGENTS.md
    ```
 2. At the start of each Grok session, paste the content of `AGENTS.md` (or reference
    it) as a system prompt or first message.
 3. For API usage, pass the content of `.agents/grok/usage-limit-reducer.md` as the
    `system` parameter in your API call.
+
+**Diagnostic script (macOS / Linux / Windows):**
+```bash
+# macOS / Linux
+python3 .agents/grok/scripts/usage-report.py
+
+# Windows
+python .agents\grok\scripts\usage-report.py
+```
 
 ---
 
@@ -155,7 +191,7 @@ Use the universal fallback:
 For any agent not listed above:
 
 ```bash
-cp .agents/universal/AGENT.md AGENTS.md
+cp .agents/universal/AGENTS.md AGENTS.md
 ```
 
 The `AGENTS.md` file at the project root is a broadly recognized convention for
@@ -163,14 +199,28 @@ AI agent instructions. Many modern agents (including OpenAI Codex, Amazon Q Deve
 and others) will pick it up automatically. If your agent doesn't, paste its content as
 a system prompt or first message.
 
-## Standalone: the token report
+**Universal diagnostic script — checks all agents at once:**
+```bash
+# macOS / Linux
+python3 .agents/universal/scripts/usage-report.py
 
-The script is useful on its own, outside the skill:
+# Windows
+python .agents\universal\scripts\usage-report.py
+```
+
+## Standalone: the token report (Claude Code)
+
+The Claude Code script is useful on its own, outside the skill:
 
 ```bash
-python3 ~/.claude/skills/usage-limit-reducer/scripts/usage-report.py --days 7
-python3 ~/.claude/skills/usage-limit-reducer/scripts/usage-report.py --days 30 --project myrepo
-python3 ~/.claude/skills/usage-limit-reducer/scripts/usage-report.py --json   # machine-readable
+python3 scripts/usage-report.py --days 7
+python3 scripts/usage-report.py --days 30 --project myrepo
+python3 scripts/usage-report.py --json   # machine-readable
+```
+
+On **Windows**, replace `python3` with `python`:
+```powershell
+python scripts\usage-report.py --days 7
 ```
 
 Example output:
@@ -227,19 +277,31 @@ usage-limit-reducer/
 ├── .agents/
 │   ├── README.md             # index of agent-specific files
 │   ├── claude/
-│   │   └── SKILL.md          # original Claude Code skill (unchanged)
+│   │   ├── SKILL.md                   # original Claude Code skill (unchanged)
+│   │   └── scripts/
+│   │       └── usage-report.py        # Claude Code token report (cross-platform)
 │   ├── cursor/
-│   │   └── usage-limit-reducer.mdc   # Cursor AI Composer rules
+│   │   ├── usage-limit-reducer.mdc    # Cursor AI Composer rules
+│   │   └── scripts/
+│   │       └── usage-report.py        # Cursor diagnostic (cross-platform)
 │   ├── github-copilot/
-│   │   └── usage-limit-reducer.md    # GitHub Copilot instructions
+│   │   ├── usage-limit-reducer.md     # GitHub Copilot instructions
+│   │   └── scripts/
+│   │       └── usage-report.py        # Copilot diagnostic (cross-platform)
 │   ├── gemini/
-│   │   └── usage-limit-reducer.md    # Google Gemini Code Assist / Firebase Studio
+│   │   ├── usage-limit-reducer.md     # Google Gemini Code Assist / Firebase Studio
+│   │   └── scripts/
+│   │       └── usage-report.py        # Gemini diagnostic (cross-platform)
 │   ├── grok/
-│   │   └── usage-limit-reducer.md    # xAI Grok
+│   │   ├── usage-limit-reducer.md     # xAI Grok
+│   │   └── scripts/
+│   │       └── usage-report.py        # Grok diagnostic (cross-platform)
 │   └── universal/
-│       └── AGENT.md          # agent-agnostic fallback (use as AGENTS.md)
+│       ├── AGENTS.md                  # agent-agnostic fallback (copy to project root)
+│       └── scripts/
+│           └── usage-report.py        # scans all agents at once (cross-platform)
 └── scripts/
-    ├── usage-report.py       # local Claude Code token dashboard
+    ├── usage-report.py       # Claude Code token report (cross-platform)
     └── test_usage_report.py  # 16 unit + CLI tests
 ```
 

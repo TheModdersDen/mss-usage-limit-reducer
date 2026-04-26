@@ -22,15 +22,25 @@ Reach for it whenever you notice:
 
 > Rule #4: you can't fix what you can't measure.
 
-**For Claude Code users:** run the bundled script to see a real breakdown:
+Run the bundled universal diagnostic script to get a snapshot of all detected agents
+and context files on your system:
 
 ```bash
-python3 <SKILL_DIR>/scripts/usage-report.py --days 7
+# macOS / Linux
+python3 .agents/universal/scripts/usage-report.py
+
+# Windows (PowerShell or Command Prompt)
+python .agents\universal\scripts\usage-report.py
 ```
 
-**For all other agents:** check the usage dashboard provided by your tool or IDE
-(e.g. GitHub Copilot → account.github.com/copilot, Cursor → cursor.com/settings,
-Gemini Code Assist → cloud.google.com/gemini/docs/codeassist/overview).
+Flags: `--json` for machine-readable output, `--cwd /path` to scan a different
+directory, `--days N` (default 7) and `--project <name>` for Claude Code log filtering.
+
+**For Claude Code users:** the script also reads local JSONL logs and shows a full
+token/cost breakdown for the last N days.
+
+**For all other agents:** the script performs environment and file-system diagnostics
+and directs you to the appropriate usage dashboard.
 
 Key metrics to find:
 - **Cache-hit ratio** — if available; < 60% means too many session restarts

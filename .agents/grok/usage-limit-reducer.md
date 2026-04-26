@@ -15,8 +15,22 @@ Work through the steps in order. Skip any that clearly don't apply, but don't sk
 
 ### Step 1 — Measure usage
 
-1. Direct the user to **x.ai** or the Grok dashboard to check their current usage and
-   plan limits.
+Run the bundled Grok diagnostic script:
+
+```bash
+# macOS / Linux
+python3 .agents/grok/scripts/usage-report.py
+
+# Windows (PowerShell or Command Prompt)
+python .agents\grok\scripts\usage-report.py
+```
+
+Add `--json` for machine-readable output. The script checks for `AGENTS.md`,
+xAI environment variables, and links you to your quota dashboard.
+
+For live quota numbers:
+
+1. Visit **x.ai** or **console.x.ai** to check your current usage and plan limits.
 2. Note the model currently in use (Grok-3, Grok-3-mini, etc.) and the conversation
    length (number of exchanges in the current session).
 

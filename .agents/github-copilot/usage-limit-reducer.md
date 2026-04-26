@@ -15,8 +15,23 @@ Work through the steps in order. Skip any that clearly don't apply, but don't sk
 
 ### Step 1 — Measure usage
 
-1. Direct the user to **github.com/settings/copilot** (or account.github.com/copilot)
-   to see their current usage and plan limits.
+Run the bundled GitHub Copilot diagnostic script:
+
+```bash
+# macOS / Linux
+python3 .agents/github-copilot/scripts/usage-report.py
+
+# Windows (PowerShell or Command Prompt)
+python .agents\github-copilot\scripts\usage-report.py
+```
+
+Add `--json` for machine-readable output. The script detects your VS Code and
+Copilot extension installation, checks for `.github/copilot-instructions.md`,
+and links you to your quota dashboard.
+
+For live quota numbers:
+
+1. Visit **github.com/settings/copilot** (or account.github.com/copilot).
 2. In VS Code, the current model is shown in the chat pane title bar or the model picker
    dropdown.
 3. Note conversation length: how many exchanges are in the current chat thread?

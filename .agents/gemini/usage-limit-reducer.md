@@ -16,11 +16,26 @@ Work through the steps in order. Skip any that clearly don't apply, but don't sk
 
 ### Step 1 — Measure usage
 
-1. Direct the user to the **Google Cloud Console → APIs & Services → Gemini Code Assist**
-   usage page, or to **idx.google.com** (Firebase Studio) → Account settings for quota
-   information.
-2. Note the model currently in use (shown in the chat or settings pane).
-3. Estimate conversation length: how many exchanges are in the current session?
+Run the bundled Gemini diagnostic script:
+
+```bash
+# macOS / Linux
+python3 .agents/gemini/scripts/usage-report.py
+
+# Windows (PowerShell or Command Prompt)
+python .agents\gemini\scripts\usage-report.py
+```
+
+Add `--json` for machine-readable output. The script checks for `GEMINI.md`,
+`~/.gemini/`, the Cloud Code VS Code extension, and links you to your quota
+dashboard.
+
+For live quota numbers:
+
+1. **Google Cloud Console → APIs & Services → Gemini Code Assist** usage page.
+2. **idx.google.com** (Firebase Studio) → Account settings for quota information.
+3. Note the model currently in use (shown in the chat or settings pane).
+4. Estimate conversation length: how many exchanges are in the current session?
 
 ### Step 2 — Diagnose the current session
 
