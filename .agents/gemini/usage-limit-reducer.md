@@ -34,12 +34,14 @@ Work through the steps in order. Skip any that clearly don't apply, but don't sk
 
 Run the bundled Gemini diagnostic script:
 
+**Path Resolution:** When running any bundled scripts, you MUST resolve their absolute paths relative to the directory containing this file (or the skill directory). Do not assume they are in your current working workspace.
+
 ```bash
 # macOS / Linux
-python3 .agents/gemini/scripts/usage-report.py
+python3 <SKILL_DIR>/scripts/usage-report.py
 
 # Windows (PowerShell or Command Prompt)
-python .agents\gemini\scripts\usage-report.py
+python <SKILL_DIR>\scripts\usage-report.py
 ```
 
 Add `--json` for machine-readable output. The script checks for `GEMINI.md`,

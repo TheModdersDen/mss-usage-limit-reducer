@@ -41,10 +41,11 @@ them — the value is in matching rules to what the user is actually doing.
 
 Rule #4: "you can't fix what you can't measure."
 
+**Path Resolution:** When running any bundled scripts (like `scripts/usage-report.py`), you MUST resolve their absolute paths relative to the directory containing this `SKILL.md` file. Do not assume they are in your current working workspace.
+
 **Claude Code** already writes every token, model, and timestamp to
 `~/.claude/projects/<project>/<session>.jsonl`. Run the bundled script to show the
-breakdown (use the absolute path to `scripts/usage-report.py` inside this skill's
-directory):
+breakdown:
 
 ```bash
 python3 <SKILL_DIR>/scripts/usage-report.py --days 7

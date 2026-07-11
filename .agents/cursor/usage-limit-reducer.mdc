@@ -35,12 +35,14 @@ Do the steps in order. Skip any that clearly don't apply, but don't skip all of 
 
 Run the bundled Cursor diagnostic script to check your environment:
 
+**Path Resolution:** When running any bundled scripts, you MUST resolve their absolute paths relative to the directory containing this `.mdc` file (or the skill directory). Do not assume they are in your current working workspace.
+
 ```bash
 # macOS / Linux
-python3 .agents/cursor/scripts/usage-report.py
+python3 <SKILL_DIR>/scripts/usage-report.py
 
 # Windows (PowerShell or Command Prompt)
-python .agents\cursor\scripts\usage-report.py
+python <SKILL_DIR>\scripts\usage-report.py
 ```
 
 Add `--json` for machine-readable output, or `--cwd /path/to/project` to scan
