@@ -18,6 +18,24 @@ Reach for it whenever you notice:
 
 ---
 
+## General Agent Guidelines
+
+As an agent, you must self-regulate your usage to prevent burning the user's tokens unnecessarily:
+1. **No Infinite Loops:** If you fail a task or test 3 times in a row, STOP and ask the user for help. Do not keep retrying the same approach.
+2. **Limit Sub-agents:** Only spawn sub-agents for truly parallel, isolated tasks. Do not spawn sub-agents for simple file edits or web searches.
+3. **Self-Monitor Turns:** Keep track of how many turns have elapsed in the current session.
+4. **Self-Estimate Context (Primary Tracker):** On every 5th turn, estimate your current context token usage by calculating roughly (Total Words in Chat * 1.33) or (Total Characters / 4). If the estimate exceeds 30,000 tokens (or your known limit), alert the user and suggest restarting the chat with a summary.
+
+## Tiered Token Strategy
+
+Apply a dynamic strategy based on the length of the conversation (or by reading `~/.agent-usage-status.json` if the background monitor is running):
+
+- **Tier 1 (Creative)**: Turns 0–10. Feel free to explore, brainstorm, and spawn sub-agents for complex parallel tasks. Maximum context window is available.
+- **Tier 2 (Balanced)**: Turns 11–20. Consolidate your tool calls. Avoid unnecessary loops. Focus strictly on completing the immediate task.
+- **Tier 3 (Conservative)**: Turns 20+. Token burn is high. Stop spawning sub-agents. Aggressively summarize your findings. If a new major task is requested, prompt the user to start a new chat with a summary of the current context.
+
+---
+
 ## Step 1 — Measure actual usage
 
 > Rule #4: you can't fix what you can't measure.

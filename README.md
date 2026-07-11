@@ -23,6 +23,26 @@ When you trigger the skill, it:
 
 ## Install
 
+### System-wide Usage Monitor (Windows, macOS, Linux)
+
+This skill includes a background monitoring script that tracks project size heuristics and local agent logs (where available) without requiring API keys. It dynamically assigns a "Token Tier" based on burn rate to instruct agents on how to optimize their token usage (Creative, Balanced, Conservative).
+
+You can install this monitor system-wide to run periodically in the background:
+
+```bash
+# macOS, Linux, and Windows
+python3 scripts/install-system-wide.py
+```
+*(On Windows, you may need to use `python scripts\install-system-wide.py` and run as Administrator to create the Scheduled Task).*
+
+**Agent-Specific Scheduling:** 
+If your agent supports native scheduling (e.g., Antigravity's `/schedule` command), you can optionally use that instead of the OS-level crontab by simply running `/schedule` in the chat window and telling the agent to run `scripts/monitor-usage.py` every hour.
+
+**Secure API Token Fallback (Optional):**
+If you want the background monitor to track exact token usage for OpenAI or Anthropic (instead of just relying on heuristics), you can securely provide your API keys. Create a `.env` or `.env.keys` file in your project root or home directory with `OPENAI_API_KEY=...` or `ANTHROPIC_API_KEY=...`. The monitor script uses `python-dotenv` to securely load these and query exact usage.
+
+---
+
 ### Claude Code
 
 ```bash
@@ -158,6 +178,16 @@ python3 .agents/gemini/scripts/usage-report.py
 # Windows
 python .agents\gemini\scripts\usage-report.py
 ```
+
+---
+
+### ChatGPT Desktop & Web
+
+ChatGPT doesn't read local workspace files natively like an IDE. To apply the token strategy:
+
+1. Copy the instructions from `.agents/chatgpt/usage-limit-reducer.md`.
+2. **Custom Instructions:** Paste the `General Agent Guidelines` and `Tiered Token Strategy` into your **Custom Instructions** (Settings -> Personalization -> "How would you like ChatGPT to respond?").
+3. **Alternative:** Paste the file contents as your very first message in a new ChatGPT conversation.
 
 ---
 
